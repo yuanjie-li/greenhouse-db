@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, DateTime, Float
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
+from src.models import Base
+
 class Measurements(Base):
     __tablename__ = 'measurements'
 
@@ -13,5 +15,5 @@ class Measurements(Base):
     location_id = Column(Integer, ForeignKey("locations.id"))
 
     device = relationship("Devices", back_populates='measurements')
-    locaiton = relationship("Locations", back_populates='measurements')
+    location = relationship("Locations", back_populates='measurements')
 
