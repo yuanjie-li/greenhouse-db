@@ -11,6 +11,7 @@ class Measurements(Base):
     timestamp = Column(DateTime)
     value = Column(Float)
     
+    # FKs
     device_id = Column(Integer, ForeignKey("devices.id"))
     location_id = Column(Integer, ForeignKey("locations.id"))
 

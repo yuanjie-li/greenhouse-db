@@ -5,6 +5,19 @@ from sqlalchemy import pool
 
 from alembic import context
 
+import os
+from dotenv import load_dotenv
+
+# Read in .env.postgres variables 
+load_dotenv(dotenv_path='.env.postgres')
+pg_usr = os.getenv('POSTGRES_USR')
+pg_pwd = os.getenv('POSTGRES_PWD')
+pg_db = os.getenv('POSTGRES_DB')
+db_uri = f"postgresql+psycopg2://{pg_usr}:{pg_pwd}@localhost/{pg_db}"
+
+config = context.config
+config.set_main_option('sqlalchemy.url', db_uri)
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

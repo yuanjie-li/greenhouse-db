@@ -9,5 +9,6 @@ class Plants(Base):
     id = Column(Integer, primary_key=True)
     type = Column(Integer)
 
+    # Referenced by 
     locations = relationship('Locations')
 

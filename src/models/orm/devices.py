@@ -9,5 +9,6 @@ class Devices(Base):
     serial = Column(String(50), unique=True)
     type = Column(Integer)
 
+    # Referenced by
     measurements = relationship("Measurements")
 
