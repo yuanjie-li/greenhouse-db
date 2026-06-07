@@ -7,14 +7,17 @@ from src.models import Base
 class Measurements(Base):
     __tablename__ = 'measurements'
 
-    id = Column(Integer, primary_key=True)
     timestamp = Column(DateTime)
     value = Column(Float)
     
     # FKs
-    device_id = Column(Integer, ForeignKey("devices.id"))
-    location_id = Column(Integer, ForeignKey("locations.id"))
+    device_id = Column(Integer, 
+                    ForeignKey(f'{Base.metadata.schema}.devices.id'))
+    location_id = Column(Integer, 
+                    ForeignKey(f'{Base.metadata.schema}.locations.id'))
 
-    device = relationship("Devices", back_populates='measurements')
-    location = relationship("Locations", back_populates='measurements')
+    #devices = relationship('devices', 
+    #                    back_populates='measurements')
+    #locations = relationship('locations', 
+    #                    back_populates='measurements')
 

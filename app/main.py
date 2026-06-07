@@ -69,7 +69,8 @@ async def root():
 @app.get("/get")
 async def get_devices(target_table: str, target_id: int ):
     '''
-    Get the entry from a table with some id.
+    Get the entry from a table with some id. All tables use 
+    integer pks.
     '''
 
     target_table = _map_table(target_table)
@@ -79,6 +80,10 @@ async def get_devices(target_table: str, target_id: int ):
 
 @app.post("/delete")
 async def delete_devices(target_table: str, target_id: int ):
+    '''
+    Delete an  entry from a table with some id. All tables use 
+    integer pks.
+    '''
     target_table = _map_table(target_table)
     entry = session.query(target_table).filter(
                           target_table.id==target_id).first() 
