@@ -1,6 +1,14 @@
 from sqlalchemy import MetaData
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+# Load 
+import os
+from dotenv import load_dotenv
+
+# Read in .env.postgres variables 
+load_dotenv(dotenv_path='.env.postgres')
+schema = os.getenv('SCHEMA')
+
 # Create a base class for our declarative models
 class Base(DeclarativeBase):
     '''
@@ -15,7 +23,7 @@ class Base(DeclarativeBase):
         'fk': 'fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s',
         'pk': 'pk_%(table_name)s',
         },
-        schema = 'gaea'
+        schema = schema
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)
