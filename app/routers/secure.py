@@ -1,25 +1,44 @@
-from fastapi import FastAPI, Depends
-from auth import check_key
+from fastapi import APIRouter
 
-# Routes to db access and other 
-from routers import secure
+from sqlalchemy import create_engine
+from sqlalchemy.engine import URL
+from sqlalchemy.orm import sessionmaker
+import sys
+from datetime import datetime
+from pathlib import Path
 
-app = FastAPI()
+# Add the current working directory to sys.path
+sys.path.append(str(Path.cwd()))
 
-app.include_router(
-    secure.router,
-    prefix="/secured/",
-    dependencies=[Depends(check_key)]
+import os
+from dotenv import load_dotenv
+
+# Read in .env.postgres variables 
+# and setup the Session
+load_dotenv(dotenv_path='.env.postgres')
+pg_usr = os.getenv('POSTGRES_USR')
+pg_pwd = os.getenv('POSTGRES_PWD')
+pg_db = os.getenv('POSTGRES_DB')
+
+url = URL.create(
+    drivername="postgresql",
+    username=pg_usr,
+    password=pg_pwd,
+    host="localhost",
+    database=pg_db,
+    port=5432
 )
 
-@app.get("/")
-async def root():
-    '''
-    Sample response from root, left over from the tutorials
-    '''
-    return {"message": "FastAPI is up"}
+engine = create_engine(url)
+Session = sessionmaker(bind=engine)
+session = Session()
 
-"""
+# Import the ORMs 
+from src.models import Base 
+from src.models.orm import *
+
+router = APIRouter()
+
 def _map_table(target_table: str): 
     '''
     Map a string input to the API as the ORM object.
@@ -192,6 +211,4 @@ async def update_plants(target_id: int,
     session.add(entry)
     session.commit()
     return {"Plants updated": entry.id}
-
-"""
 
