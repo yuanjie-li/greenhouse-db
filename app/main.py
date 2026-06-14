@@ -2,14 +2,14 @@ from fastapi import FastAPI, Depends
 from auth import check_key
 
 # Routes to db access and other 
-from routers import secure
+from routers import postgresDb
 
 app = FastAPI()
 
 app.include_router(
-    secure.router,
-    prefix="/secured/",
-    dependencies=[Depends(check_key)]
+    postgresDb.router,
+    prefix="/postgresDb",
+    #dependencies=[Depends(check_key)]
 )
 
 @app.get("/")

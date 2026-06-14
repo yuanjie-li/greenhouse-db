@@ -60,8 +60,8 @@ def _map_table(target_table: str):
 #################
 # Read / Delete 
 #################
-@app.get("/get")
-async def get_devices(target_table: str, target_id: int ):
+@router.get("/get")
+async def get(target_table: str, target_id: int ):
     '''
     Get the entry from a table with some id. All tables use 
     integer pks.
@@ -72,8 +72,8 @@ async def get_devices(target_table: str, target_id: int ):
                           target_table.id == target_id).first()
     return entry
 
-@app.post("/delete")
-async def delete_devices(target_table: str, target_id: int ):
+@router.post("/delete")
+async def delete(target_table: str, target_id: int ):
     '''
     Delete an  entry from a table with some id. All tables use 
     integer pks.
@@ -88,14 +88,14 @@ async def delete_devices(target_table: str, target_id: int ):
 #################
 #### Devices ####
 #################
-@app.post("/create/devices")
+@router.post("/create/devices")
 async def create_devices(new_serial: str, new_type: int ):
     entry = Devices(serial=new_serial, type=new_type)
     session.add(entry)
     session.commit()
     return {"Device added": entry.id}
 
-@app.post("/update/devices")
+@router.post("/update/devices")
 async def update_devices(target_id: int, 
                         new_serial: str = None, 
                         new_type: int = None):
@@ -109,17 +109,28 @@ async def update_devices(target_id: int,
     session.commit()
     return {"Device updated": entry.id}
 
+@router.get("/get/device")
+async def get_device(target_serial: str ):
+    '''
+    Get the device ID based on the serial number
+    '''
+
+    entry = session.query(Devices).filter(
+                          Devices.serial == target_serial).first()
+    return entry
+
+
 #################
 ### Locations ###
 #################
-@app.post("/create/locations")
+@router.post("/create/locations")
 async def create_locations(new_plant_id: int ):
     entry = Locations(plant_id=new_plant_id)
     session.add(entry)
     session.commit()
     return {"Locations added": entry.id}
 
-@app.post("/update/locations")
+@router.post("/update/locations")
 async def update_locations(target_id: int, 
                         new_plant_id: int = None):
     entry = session.query(Locations).filter(
@@ -134,14 +145,14 @@ async def update_locations(target_id: int,
 #################
 ### Locations ###
 #################
-@app.post("/create/locations")
+@router.post("/create/locations")
 async def create_locations(new_plant_id: int ):
     entry = Locations(plant_id=new_plant_id)
     session.add(entry)
     session.commit()
     return {"Locations added": entry.id}
 
-@app.post("/update/locations")
+@router.post("/update/locations")
 async def update_locations(target_id: int, 
                         new_plant_id: int = None):
     entry = session.query(Locations).filter(
@@ -156,7 +167,7 @@ async def update_locations(target_id: int,
 #################
 # Measurements ##
 #################
-@app.post("/create/measurements")
+@router.post("/create/measurements")
 async def create_measurements(new_timestamp: datetime,
                               new_value: float,
                               new_device_id: int,
@@ -169,7 +180,7 @@ async def create_measurements(new_timestamp: datetime,
     session.commit()
     return {"Measurements added": entry.id}
 
-@app.post("/update/measurements")
+@router.post("/update/measurements")
 async def update_measurements(target_id: int, 
                               new_timestamp: datetime = None,
                               new_value: float = None,
@@ -193,14 +204,14 @@ async def update_measurements(target_id: int,
 #################
 #### Plants #####
 #################
-@app.post("/create/plants")
+@router.post("/create/plants")
 async def create_plants(new_type: int ):
     entry = Plants(type=new_type)
     session.add(entry)
     session.commit()
     return {"Plants added": entry.id}
 
-@app.post("/update/plants")
+@router.post("/update/plants")
 async def update_plants(target_id: int, 
                         new_type: int = None):
     entry = session.query(Plants).filter(
