@@ -18,6 +18,12 @@ class Locations(Base):
               doc="Name for the location, e.g. 'Kitchen', 'Garden'.",
               comment="Name for the location, e.g. 'Kitchen', 'Garden'.",
     )
+    group_nickname = Column(String(15),
+              nullable=True,
+              default=None,
+              doc="Higher level to group locations, if necessary.",
+              comment="Higher level to group locations, if necessary.",
+    )
     owner = Column(String(50),
               nullable=True,
               default=None,
@@ -49,9 +55,4 @@ class Locations(Base):
                   comment="String description of location",
     )
     
-
-    ### FKs
-    plant_id = Column(Integer, 
-                      ForeignKey(f'{Base.metadata.schema}.plants.id', 
-                                 ondelete='CASCADE'))
 

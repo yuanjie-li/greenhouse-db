@@ -22,9 +22,4 @@ class Measurements(Base):
                     doc='FK to the device that made the reading.',
                     comment='FK to the device that made the reading.'
     )
-    location_id = Column(Integer, 
-                    ForeignKey(f'{Base.metadata.schema}.locations.id'),
-                    doc='FK to where this reading was done.',
-                    comment='FK to where this reading was done.'
-    )
 
