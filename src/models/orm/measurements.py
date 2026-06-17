@@ -7,17 +7,24 @@ from src.models import Base
 class Measurements(Base):
     __tablename__ = 'measurements'
 
-    timestamp = Column(DateTime)
-    value = Column(Float)
+    timestamp = Column(DateTime,
+                    doc='%Y-%m-%d %H:%M:%S. Set by API, not the sensor.',
+                    comment='%Y-%m-%d %H:%M:%S. Set by API, not the sensor.'
+    )
+    value = Column(Float(5),
+                    doc='Sensor raw reading.',
+                    comment='Sensor raw reading.'
+    )
     
     # FKs
     device_id = Column(Integer, 
-                    ForeignKey(f'{Base.metadata.schema}.devices.id'))
+                    ForeignKey(f'{Base.metadata.schema}.devices.id'),
+                    doc='FK to the device that made the reading.',
+                    comment='FK to the device that made the reading.'
+    )
     location_id = Column(Integer, 
-                    ForeignKey(f'{Base.metadata.schema}.locations.id'))
-
-    #devices = relationship('devices', 
-    #                    back_populates='measurements')
-    #locations = relationship('locations', 
-    #                    back_populates='measurements')
+                    ForeignKey(f'{Base.metadata.schema}.locations.id'),
+                    doc='FK to where this reading was done.',
+                    comment='FK to where this reading was done.'
+    )
 

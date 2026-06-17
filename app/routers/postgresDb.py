@@ -168,11 +168,14 @@ async def update_locations(target_id: int,
 # Measurements ##
 #################
 @router.post("/create/measurements")
-async def create_measurements(new_timestamp: datetime,
-                              new_value: float,
+async def create_measurements(new_value: float,
                               new_device_id: int,
                               new_location_id: int):
-    entry = Measurements(timestampe=new_timestamp,
+    # Get timestamp here, so everything is in ref to this Db 
+    # (no timezones).
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    entry = Measurements(timestamp=new_timestamp,
                          value=new_value,
                          device_id=new_device_id,
                          location_id=new_location_id)
