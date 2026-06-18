@@ -143,42 +143,19 @@ async def update_locations(target_id: int,
     return {"Locations updated": entry.id}
 
 #################
-### Locations ###
-#################
-@router.post("/create/locations")
-async def create_locations(new_plant_id: int ):
-    entry = Locations(plant_id=new_plant_id)
-    session.add(entry)
-    session.commit()
-    return {"Locations added": entry.id}
-
-@router.post("/update/locations")
-async def update_locations(target_id: int, 
-                        new_plant_id: int = None):
-    entry = session.query(Locations).filter(
-                          Locations.id == target_id).first()
-    
-    if new_plant_id is not None: 
-        entry.plant_id = new_plant_id
-    session.add(entry)
-    session.commit()
-    return {"Locations updated": entry.id}
-
-#################
 # Measurements ##
 #################
 @router.post("/create/measurements")
 async def create_measurements(new_value: float,
-                              new_device_id: int,
-                              new_location_id: int):
+                              new_device_id: int):
     # Get timestamp here, so everything is in ref to this Db 
     # (no timezones).
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     entry = Measurements(timestamp=new_timestamp,
                          value=new_value,
-                         device_id=new_device_id,
-                         location_id=new_location_id)
+                         device_id=new_device_id
+                         )
     session.add(entry)
     session.commit()
     return {"Measurements added": entry.id}
@@ -187,8 +164,7 @@ async def create_measurements(new_value: float,
 async def update_measurements(target_id: int, 
                               new_timestamp: datetime = None,
                               new_value: float = None,
-                              new_device_id: int = None,
-                              new_location_id: int = None):
+                              new_device_id: int = None):
     entry = session.query(Measurements).filter(
                           Measurements.id == target_id).first()
     
@@ -198,11 +174,9 @@ async def update_measurements(target_id: int,
         entry.value = new_value
     if new_device_id is not None: 
         entry.device_id = new_device_id
-    if new_location_id is not None: 
-        entry.location_id = new_location_id
     session.add(entry)
     session.commit()
-    return {"Peasurements updated": entry.id}
+    return {"Measurements updated": entry.id}
 
 #################
 #### Plants #####
