@@ -152,7 +152,7 @@ async def create_measurements(new_value: float,
     # (no timezones).
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    entry = Measurements(timestamp=new_timestamp,
+    entry = Measurements(timestamp=timestamp,
                          value=new_value,
                          device_id=new_device_id
                          )
